@@ -66,7 +66,7 @@ class SearchCityViewController: UIViewController, UISearchBarDelegate {
     func filterContentForSearchText(_ searchText: String) {
       filteredCandies = cityList.filter { (cityList: CountryList) -> Bool in
         if !isSearchBarEmpty {
-          return cityList.name.lowercased().contains(searchText.lowercased())
+            return cityList.name.lowercased().contains(searchText.lowercased()) || cityList.coord.lat == Double(searchText) || cityList.coord.lon == Double(searchText)
         }
         return false
       }
@@ -132,9 +132,14 @@ extension SearchCityViewController: UITableViewDataSource {
 
 extension SearchCityViewController: UITableViewDelegate{
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let getCity = isFiltering ? filteredCandies[indexPath.row] : cityList[indexPath.row]
+        callback?(getCity)
+        searchFooterBottomConstraint.constant = 0
+        searchController.searchBar.text = ""
+        searchController.searchBar.resignFirstResponder()
+        self.navigationController?.popViewController(animated: true)
         
     }
     

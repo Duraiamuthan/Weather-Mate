@@ -22,7 +22,8 @@ class CountryListCell: UITableViewCell, Reusable {
     var onReuse: () -> Void = {}
     func  configureCell(cList: CList){
         textLabel?.text = cList.cName
-        detailTextLabel?.text = convertTemp(temp: cList.temp, from: .kelvin, to: .fahrenheit)
+        detailTextLabel?.text = convertTemp(temp: cList.temp, from: .kelvin, to: .celsius) // fahrenheit
+        guard !cList.icon.isEmpty else { return }
         if let getImageURL = URL(string:String(format: "http://openweathermap.org/img/wn/%@@2x.png", cList.icon)), !getImageURL.absoluteString.isEmpty{
             imageView?.loadImage(at: getImageURL)
         }
@@ -65,18 +66,43 @@ class CountryListViewController: UITableViewController {
         }) */
         
         
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
     }
     
     func setUp(){
         tableView.rowHeight = 75
-        getselectedItems = [
-            CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
-            CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
-            CList(cName: "Brisbane",icon:"11n", cID: 2174003, temp: 25.29)
-        ]
+        for getCitylist in [2147714,4163971, 2174003 ]{
+            updateCityList(geCityID: getCitylist)
+        }
+//        getselectedItems = [
+//            CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
+//            CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
+//            CList(cName: "Brisbane",icon:"11n", cID: 2174003, temp: 25.29)
+//        ]
     }
+    
+    // MARK: - APi call for get city details
+    func updateCityList(geCityID: Int){
+        self.view.activityStartAnimating(activityColor: .white, backgroundColor: UIColor.black.withAlphaComponent(0.5))
+        ServiceLayer.request(router: Router.getCityTempInfo, ciyIDParameters: ["id": String(geCityID)]) { (result: Result<CityDetailsList, Error>) in
+            DispatchQueue.main.async {
+                self.view.activityStopAnimating()
+                switch result {
+                case .success (let currentCity):
+                        let getCityName = CList(cName: currentCity.name, icon:currentCity.weather.first?.icon ?? "", cID: currentCity.id, temp: currentCity.main.temp)
+                        self.getselectedItems.append(getCityName)
+                        self.tableView.refresh()
+                    
+                case .failure (let error):
+                   // print(error.localizedDescription)
+                    self.showToast(message: error.localizedDescription, seconds: 2.0)
+                }
+            }
+
+        }
+    }
+   
+
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -107,9 +133,17 @@ class CountryListViewController: UITableViewController {
      // Pass the selected object to the new view controller.
         guard  let getDesinationVC = segue.destination as? SearchCityViewController else { return
         }
-        getDesinationVC.callback = {
+        getDesinationVC.callback = { [self]
             (citySelectedList) in
-            print(citySelectedList?.name)
+            if let getCityID = citySelectedList?.id, let getCityName = citySelectedList?.name {
+                let getFoundedItem = getselectedItems.first(where: {$0.cID == getCityID})
+                if getFoundedItem != nil{
+                    // city is already founded in list
+                    self.showToast(message: String(format: "%@ city already added in the list", getCityName), seconds: 2.0)
+                    return
+                }
+                updateCityList(geCityID: getCityID)
+            }
         }
      }
       
