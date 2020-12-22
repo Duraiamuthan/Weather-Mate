@@ -55,9 +55,9 @@ struct Main: Codable {
 
 // MARK: - Sys
 struct Sys: Codable {
-    let type, id: Int
+ //   let type, id: Int
     let country: String
-    let sunrise, sunset: Int
+//    let sunrise, sunset: Int
 }
 
 // MARK: - Weather
@@ -92,6 +92,71 @@ struct CountryList: Codable {
 struct Coord: Codable {
     let lon, lat: Double
 }
+
+
+
+// MARK: - Welcome
+struct TempInfo: Codable {
+     let message, cod: String
+      let count: Int
+      let list: [List]
+}
+
+struct List: Codable {
+    let id: Int
+    let name: String
+    let coord: Coord
+    let main: Main
+    let dt: Int
+    let wind: Wind
+    let sys: Sys
+    let rain: Rain?
+    let snow: JSONNull?
+    let clouds: Clouds
+    let weather: [Weather]
+}
+
+
+// MARK: - Rain
+struct Rain: Codable {
+    let the1H: Double
+
+    enum CodingKeys: String, CodingKey {
+        case the1H = "1h"
+    }
+}
+
+ 
+
+// MARK: - Encode/decode helpers
+
+class JSONNull: Codable, Hashable {
+
+    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+        return true
+    }
+
+    public var hashValue: Int {
+        return 0
+    }
+
+    public init() {}
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if !container.decodeNil() {
+            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encodeNil()
+    }
+}
+ 
+
+ 
 
 func ==(lhs: Coord, rhs: Coord) -> Bool {
     return lhs.lon == rhs.lon || lhs.lat == rhs.lat

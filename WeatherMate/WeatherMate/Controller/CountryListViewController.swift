@@ -22,7 +22,7 @@ class CountryListCell: UITableViewCell, Reusable {
     var onReuse: () -> Void = {}
     func  configureCell(cList: CList){
         textLabel?.text = cList.cName
-        detailTextLabel?.text = convertTemp(temp: cList.temp, from: .kelvin, to: .celsius) // fahrenheit
+        detailTextLabel?.text = FormatDisplay.convertTemp(temp: cList.temp) // fahrenheit
         guard !cList.icon.isEmpty else { return }
         if let getImageURL = URL(string:String(format: "http://openweathermap.org/img/wn/%@@2x.png", cList.icon)), !getImageURL.absoluteString.isEmpty{
             imageView?.loadImage(at: getImageURL)
@@ -35,14 +35,7 @@ class CountryListCell: UITableViewCell, Reusable {
         imageView?.image = nil
       }
     
-    func convertTemp(temp: Double, from inputTempType: UnitTemperature, to outputTempType: UnitTemperature) -> String {
-        let mf = MeasurementFormatter()
-        mf.numberFormatter.maximumFractionDigits = 0
-        mf.unitOptions = .providedUnit
-        let input = Measurement(value: temp, unit: inputTempType)
-        let output = input.converted(to: outputTempType)
-        return mf.string(from: output)
-      }
+    
 }
 
 class CountryListViewController: UITableViewController {
@@ -53,6 +46,8 @@ class CountryListViewController: UITableViewController {
         }
     } */
     var getselectedItems: [CList] =  []
+    let toDetailVCSegue = "openDetail"
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,12 +120,27 @@ class CountryListViewController: UITableViewController {
          return countryCell
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated:  true)
+        self.performSegue(withIdentifier: toDetailVCSegue, sender: indexPath)
+    }
+    
     
      // MARK: - Navigation
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destination.
      // Pass the selected object to the new view controller.
+        
+        if segue.identifier == toDetailVCSegue{
+            guard  let getDesinationVC = segue.destination as? DetailViewController else { return
+            }
+            if let selectedIndex = sender as? IndexPath{
+                getDesinationVC.getCityName = getselectedItems[selectedIndex.row].cName
+            }
+            
+            return
+        }
         guard  let getDesinationVC = segue.destination as? SearchCityViewController else { return
         }
         getDesinationVC.callback = { [self]

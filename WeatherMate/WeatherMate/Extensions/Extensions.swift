@@ -124,4 +124,37 @@ extension UIViewController{
         }
 
     }
+    
+    
+}
+
+struct FormatDisplay {
+  static func distance(_ distance: Double) -> String {
+    let distanceMeasurement = Measurement(value: distance, unit: UnitLength.meters)
+    return FormatDisplay.distance(distanceMeasurement)
+  }
+  
+  static func distance(_ distance: Measurement<UnitLength>) -> String {
+    let formatter = MeasurementFormatter()
+    return formatter.string(from: distance)
+  }
+  
+    static func convertTemp(temp: Double) -> String {
+        let formatter = MeasurementFormatter()
+        formatter.numberFormatter.maximumFractionDigits = 0
+        formatter.unitOptions = .providedUnit
+        let input = Measurement(value: temp, unit: UnitTemperature.kelvin)
+        let output = input.converted(to: UnitTemperature.celsius)
+        return formatter.string(from: output)
+      }
+  
+  static func pace(distance: Measurement<UnitLength>, seconds: Int, outputUnit: UnitSpeed) -> String {
+    let formatter = MeasurementFormatter()
+    formatter.unitOptions = [.providedUnit] // 1
+    let speedMagnitude = seconds != 0 ? distance.value / Double(seconds) : 0
+    let speed = Measurement(value: speedMagnitude, unit: UnitSpeed.metersPerSecond)
+    return formatter.string(from: speed.converted(to: outputUnit))
+  }
+  
+   
 }
