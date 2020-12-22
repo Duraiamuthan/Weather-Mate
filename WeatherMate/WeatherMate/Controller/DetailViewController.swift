@@ -39,6 +39,9 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var lblPressure: UILabel!
     @IBOutlet weak var lblWindSpeed: UILabel!
     
+    var oneShot : DispatchSourceTimer!
+    var shootingEngine:Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBGImage()
@@ -53,11 +56,20 @@ class DetailViewController: UIViewController {
     
     func setupBGImage(){
         vieBG.layer.contents = UIImage(named: "Weather_image.jpg")?.cgImage
-
-        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        backgroundImage.image = UIImage(named: "Weather_image.jpg")
-        backgroundImage.contentMode = UIView.ContentMode.scaleAspectFill
-       // self.vieBG.insertSubview(backgroundImage, at: 0)
+        
+        shootingEngine = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(callListDetails), userInfo: nil, repeats: true)
+ 
+    }
+    
+    @objc func callListDetails(){
+        self.getTempInfo(getCityName: self.getCityName)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+     
+        shootingEngine?.invalidate()
+        shootingEngine = nil
     }
     
     @IBAction func refreshTemp(_ sender: UIBarButtonItem) {
