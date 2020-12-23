@@ -25,7 +25,7 @@ enum Router {
           return "api.openweathermap.org"
         }
       }
-    
+     
     // 4.
      var path: String {
        switch self {

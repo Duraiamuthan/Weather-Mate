@@ -26,7 +26,7 @@ class SearchCityViewController: UIViewController, UISearchBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        cityList = CountryList.getAllCity()
+       
         // Do any additional setup after loading the view.
         // 1
         searchController.searchResultsUpdater = self
@@ -36,7 +36,7 @@ class SearchCityViewController: UIViewController, UISearchBarDelegate {
         searchController.searchBar.placeholder = "Search City"
         // 4
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = true
+        navigationItem.hidesSearchBarWhenScrolling = false
 
         // 5
         definesPresentationContext = true

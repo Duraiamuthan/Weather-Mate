@@ -158,3 +158,8 @@ struct FormatDisplay {
   
    
 }
+
+
+struct pathURL{
+    static let imagePath = "http://openweathermap.org/img/wn/"
+}

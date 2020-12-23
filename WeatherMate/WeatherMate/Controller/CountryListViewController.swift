@@ -22,12 +22,13 @@ class CountryListCell: UITableViewCell, Reusable {
     var onReuse: () -> Void = {}
     func  configureCell(cList: CList){
         textLabel?.text = cList.cName
-        detailTextLabel?.text = FormatDisplay.convertTemp(temp: cList.temp) // fahrenheit
+        detailTextLabel?.text =  String(format:"%0.f°C",cList.temp) //(FormatDisplay.convertTemp(temp: cList.temp) // fahrenheit
         guard !cList.icon.isEmpty else { return }
-        if let getImageURL = URL(string:String(format: "http://openweathermap.org/img/wn/%@@2x.png", cList.icon)), !getImageURL.absoluteString.isEmpty{
+        if let getImageURL = URL(string:String(format: "%@%@@2x.png",pathURL.imagePath, cList.icon)), !getImageURL.absoluteString.isEmpty{
             imageView?.loadImage(at: getImageURL)
         }
     }
+    
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -47,13 +48,32 @@ class CountryListViewController: UITableViewController {
     } */
     var getselectedItems: [CList] =  []
     let toDetailVCSegue = "openDetail"
-
+    var cityList: [CountryList] = []
+    
+    lazy var cityRefreshControl: UIRefreshControl = {
+            let refreshControl = UIRefreshControl()
+            refreshControl.addTarget(self, action:
+                         #selector(handleRefresh(_:)),
+                                     for: .valueChanged)
+        refreshControl.tintColor = .white
+        refreshControl.backgroundColor = .purple
+        return refreshControl
+        }()
+    
+    lazy var dateFormatter: DateFormatter = {
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, h:mm a"
+        return dateFormatter
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 75
+        cityList = CountryList.getAllCity()
         setUp()
         tableView.register(cellType: CountryListCell.self)
-        
+        tableView.addSubview(cityRefreshControl)
         /*
         self.getAllList(configure: { [weak self] countryList in
             guard let this = self else { return}
@@ -64,11 +84,19 @@ class CountryListViewController: UITableViewController {
         
     }
     
+    // MARK: - handle Refresh action
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.cityRefreshControl.beginRefreshing()
+        self.getselectedItems.removeAll()
+        setUp()
+        }
+    
     func setUp(){
-        tableView.rowHeight = 75
+        
         for getCitylist in [2147714,4163971, 2174003 ]{
             updateCityList(geCityID: getCitylist)
         }
+       
 //        getselectedItems = [
 //            CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
 //            CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
@@ -82,6 +110,12 @@ class CountryListViewController: UITableViewController {
         ServiceLayer.request(router: Router.getCityTempInfo, ciyIDParameters: ["id": String(geCityID)]) { (result: Result<CityDetailsList, Error>) in
             DispatchQueue.main.async {
                 self.view.activityStopAnimating()
+                let updateString = "Last Updated at " + self.dateFormatter.string(from: Date())
+                   self.cityRefreshControl.attributedTitle =  NSAttributedString(string: updateString,
+                                                                             attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
+                   if self.cityRefreshControl.isRefreshing {
+                     self.cityRefreshControl.endRefreshing()
+                   }
                 switch result {
                 case .success (let currentCity):
                         let getCityName = CList(cName: currentCity.name, icon:currentCity.weather.first?.icon ?? "", cID: currentCity.id, temp: currentCity.main.temp)
@@ -143,6 +177,7 @@ class CountryListViewController: UITableViewController {
         }
         guard  let getDesinationVC = segue.destination as? SearchCityViewController else { return
         }
+        getDesinationVC.cityList = cityList
         getDesinationVC.callback = { [self]
             (citySelectedList) in
             if let getCityID = citySelectedList?.id, let getCityName = citySelectedList?.name {

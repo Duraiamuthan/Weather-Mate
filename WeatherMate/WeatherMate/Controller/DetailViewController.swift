@@ -123,7 +123,7 @@ class DetailViewController: UIViewController {
         guard  !icon.isEmpty else {
             return
         }
-    if let getImageURL = URL(string:String(format: "http://openweathermap.org/img/wn/%@@2x.png", icon)), !getImageURL.absoluteString.isEmpty{
+    if let getImageURL = URL(string:String(format:"%@%@@2x.png",pathURL.imagePath, icon)), !getImageURL.absoluteString.isEmpty{
         imgCloudy?.loadImage(at: getImageURL)
     }
     }
