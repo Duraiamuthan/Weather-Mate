@@ -17,10 +17,10 @@ class ServiceLayer {
         components.path = router.path
         
         var queryItems: [URLQueryItem] = router.parameters
-
-            let optionalURLQueryItems = ciyIDParameters.map {
-                return URLQueryItem(name: $0, value: $1)
-            }
+        
+        let optionalURLQueryItems = ciyIDParameters.map {
+            return URLQueryItem(name: $0, value: $1)
+        }
         queryItems.append(contentsOf: optionalURLQueryItems)
         components.queryItems = queryItems
         // 3.
@@ -30,21 +30,21 @@ class ServiceLayer {
         // 4.
         let session = URLSession(configuration: .default)
         let dataTask = session.dataTask(with: urlRequest) { data, response, error in
-        
+            
             //6.
             if let response = response as? HTTPURLResponse, response.isResponseSuccess {
-                                    //  its successful
+                //  its successful
                 let responseObject = try! JSONDecoder().decode(T.self, from: data!)
                 // 7.
                 DispatchQueue.main.async {
                     // 8.
                     completion(.success(responseObject))
                 }
-                                } else {
-                                    if let getError = error{
-                                        completion(.failure(getError))
-                                    }
-                                }
+            } else {
+                if let getError = error{
+                    completion(.failure(getError))
+                }
+            }
         }
         dataTask.resume()
     }

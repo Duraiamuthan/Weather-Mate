@@ -40,50 +40,49 @@ extension UITableView {
         }
         return cell
     }
+    
     // refresh data
     func refresh(){
         self.reloadData()
     }
+    
     // remove empty cells
     override open func didMoveToSuperview() {
         super.didMoveToSuperview()
         self.tableFooterView = UIView()
-        
     }
     
+    // To get last visible cell for animation
     func isLastVisibleCell(at indexPath: IndexPath) -> Bool {
         guard let lastIndexPath = indexPathsForVisibleRows?.last else {
             return false
         }
-        
         return lastIndexPath == indexPath
     }
 }
 
-
 extension UIImageView {
-  func loadImage(at url: URL) {
-    UIImageLoader.loader.load(url, for: self)
-  }
-
-  func cancelImageLoad() {
-    UIImageLoader.loader.cancel(for: self)
-  }
+    func loadImage(at url: URL) {
+        UIImageLoader.loader.load(url, for: self)
+    }
+    
+    func cancelImageLoad() {
+        UIImageLoader.loader.cancel(for: self)
+    }
 }
 
 extension UIColor {
-  static let cityGreen = UIColor(red: 67.0/255.0, green: 205.0/255.0, blue: 135.0/255.0, alpha: 1.0)
+    static let cityGreen = UIColor(red: 67.0/255.0, green: 205.0/255.0, blue: 135.0/255.0, alpha: 1.0)
 }
-
 
 extension HTTPURLResponse {
     var isResponseSuccess : Bool {
-      return (200...299).contains(self.statusCode)
-     }
+        return (200...299).contains(self.statusCode)
+    }
 }
 
 extension UIView{
-
+    
     func activityStartAnimating(activityColor: UIColor, backgroundColor: UIColor) {
         let backgroundView = UIView()
         backgroundView.frame = CGRect.init(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
@@ -100,10 +99,10 @@ extension UIView{
         self.isUserInteractionEnabled = false
         
         backgroundView.addSubview(activityIndicator)
-
+        
         self.addSubview(backgroundView)
     }
-
+    
     func activityStopAnimating() {
         if let background = viewWithTag(475647){
             background.removeFromSuperview()
@@ -113,6 +112,7 @@ extension UIView{
 }
 
 extension UIViewController{
+    // To show a toast message when there's no matching record
     func showToast( message : String = "", seconds: Double = 1.5){
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.view.backgroundColor = .black
@@ -122,23 +122,20 @@ extension UIViewController{
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + seconds) {
             alert.dismiss(animated: true)
         }
-
     }
-    
-    
 }
 
 struct FormatDisplay {
-  static func distance(_ distance: Double) -> String {
-    let distanceMeasurement = Measurement(value: distance, unit: UnitLength.meters)
-    return FormatDisplay.distance(distanceMeasurement)
-  }
-  
-  static func distance(_ distance: Measurement<UnitLength>) -> String {
-    let formatter = MeasurementFormatter()
-    return formatter.string(from: distance)
-  }
-  
+    static func distance(_ distance: Double) -> String {
+        let distanceMeasurement = Measurement(value: distance, unit: UnitLength.meters)
+        return FormatDisplay.distance(distanceMeasurement)
+    }
+    
+    static func distance(_ distance: Measurement<UnitLength>) -> String {
+        let formatter = MeasurementFormatter()
+        return formatter.string(from: distance)
+    }
+    
     static func convertTemp(temp: Double) -> String {
         let formatter = MeasurementFormatter()
         formatter.numberFormatter.maximumFractionDigits = 0
@@ -146,19 +143,16 @@ struct FormatDisplay {
         let input = Measurement(value: temp, unit: UnitTemperature.kelvin)
         let output = input.converted(to: UnitTemperature.celsius)
         return formatter.string(from: output)
-      }
-  
-  static func pace(distance: Measurement<UnitLength>, seconds: Int, outputUnit: UnitSpeed) -> String {
-    let formatter = MeasurementFormatter()
-    formatter.unitOptions = [.providedUnit] // 1
-    let speedMagnitude = seconds != 0 ? distance.value / Double(seconds) : 0
-    let speed = Measurement(value: speedMagnitude, unit: UnitSpeed.metersPerSecond)
-    return formatter.string(from: speed.converted(to: outputUnit))
-  }
-  
-   
+    }
+    
+    static func pace(distance: Measurement<UnitLength>, seconds: Int, outputUnit: UnitSpeed) -> String {
+        let formatter = MeasurementFormatter()
+        formatter.unitOptions = [.providedUnit] // 1
+        let speedMagnitude = seconds != 0 ? distance.value / Double(seconds) : 0
+        let speed = Measurement(value: speedMagnitude, unit: UnitSpeed.metersPerSecond)
+        return formatter.string(from: speed.converted(to: outputUnit))
+    }
 }
-
 
 struct pathURL{
     static let imagePath = "http://openweathermap.org/img/wn/"
