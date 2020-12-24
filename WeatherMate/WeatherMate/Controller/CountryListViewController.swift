@@ -42,6 +42,8 @@ class CountryListViewController: UITableViewController {
     var getselectedItems: [CList] =  []
     let toDetailVCSegue = "openDetail"
     var cityList: [CountryList] = []
+    let userDefaults = UserDefaults.standard
+    let key = "countryList"
     
     lazy var cityRefreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -81,14 +83,23 @@ class CountryListViewController: UITableViewController {
                 
             }
         }
-        getselectedItems = [
-            CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
-            CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
-            CList(cName: "Brisbane",icon:"11n", cID: 2174003, temp: 25.29)
-        ]
+        if let data = userDefaults.value(forKey:key) as? Data, let getCityList = try? PropertyListDecoder().decode(Array<CList>.self, from: data),
+           !getCityList.isEmpty {
+            getselectedItems = getCityList
+            
+        }else{
+            getselectedItems = [
+                CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
+                CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
+                CList(cName: "Brisbane",icon:"11n", cID: 2174003, temp: 25.29)
+            ]
+        }
+        
         setUp()
+        
         tableView.register(cellType: CountryListCell.self)
         tableView.addSubview(cityRefreshControl)
+        
         
     }
     
@@ -152,12 +163,13 @@ class CountryListViewController: UITableViewController {
         setUp()
     }
     
-    func setUp(){
+    func setUp( state: Bool = false){
         for getCitylist in getselectedItems { //[2147714,4163971, 2174003 ]
             self.getselectedItems.removeAll()
             updateCityList(geCityID: getCitylist.cID)
         }
     }
+    
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -199,25 +211,25 @@ extension CountryListViewController{
     // MARK: - APi call for get city details
     func updateCityList(geCityID: Int){
         self.view.activityStartAnimating(activityColor: .white, backgroundColor: UIColor.black.withAlphaComponent(0.5))
-        ServiceLayer.request(router: Router.getCityTempInfo, ciyIDParameters: ["id": String(geCityID)]) { (result: Result<CityDetailsList, Error>) in
-            print(result)
+        ServiceLayer.request(router: Router.getCityTempInfo, ciyIDParameters: ["id": String(geCityID)]) { [weak self] (result: Result<CityDetailsList, Error>) in
             DispatchQueue.main.async {
-                self.view.activityStopAnimating()
-                let updateString = "Last Updated at " + self.dateFormatter.string(from: Date())
-                self.cityRefreshControl.attributedTitle =  NSAttributedString(string: updateString,
+                guard let this = self else { return}
+                this.view.activityStopAnimating()
+                let updateString = "Last Updated at " + this.dateFormatter.string(from: Date())
+                this.cityRefreshControl.attributedTitle =  NSAttributedString(string: updateString,
                                                                               attributes: [NSAttributedString.Key.foregroundColor : UIColor.white])
-                if self.cityRefreshControl.isRefreshing {
-                    self.cityRefreshControl.endRefreshing()
+                if this.cityRefreshControl.isRefreshing {
+                    this.cityRefreshControl.endRefreshing()
                 }
                 switch result {
                 case .success (let currentCity):
                     let getCityName = CList(cName: currentCity.name, icon:currentCity.weather.first?.icon ?? "", cID: currentCity.id, temp: currentCity.main.temp)
-                    self.getselectedItems.append(getCityName)
-                    self.tableView.refresh()
-                    
+                    this.getselectedItems.append(getCityName)
+                    this.tableView.refresh()
+                    this.userDefaults.set(try? PropertyListEncoder().encode(this.getselectedItems), forKey:this.key)
                 case .failure (let error):
                     // print(error.localizedDescription)
-                    self.showToast(message: error.localizedDescription, seconds: 2.0)
+                    this.showToast(message: error.localizedDescription, seconds: 2.0)
                 }
             }
         }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CList {
+struct CList: Codable {
     let cName, icon: String
     let cID: Int
     let temp: Double

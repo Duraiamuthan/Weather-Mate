@@ -39,6 +39,7 @@
 		450933652592B0E60092FDF5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4509329E2591065D0092FDF5 /* SceneDelegate.swift */; };
 		45153D0425930720005505E1 /* Citylist.json in Resources */ = {isa = PBXBuildFile; fileRef = 45153D0325930720005505E1 /* Citylist.json */; };
 		45153D0525930720005505E1 /* Citylist.json in Resources */ = {isa = PBXBuildFile; fileRef = 45153D0325930720005505E1 /* Citylist.json */; };
+		45EA14FF25953707000532D5 /* PropertyListner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA14FE25953707000532D5 /* PropertyListner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		450933262592A1970092FDF5 /* Weather_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Weather_image.jpg; sourceTree = "<group>"; };
 		450933312592B0130092FDF5 /* WeatherMateFakeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMateFakeTests.swift; sourceTree = "<group>"; };
 		45153D0325930720005505E1 /* Citylist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Citylist.json; sourceTree = "<group>"; };
+		45EA14FE25953707000532D5 /* PropertyListner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyListner.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 		450932E52591A2420092FDF5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				45EA14FE25953707000532D5 /* PropertyListner.swift */,
 				450932E62591A2A40092FDF5 /* Extensions.swift */,
 				450932EE2591A2D90092FDF5 /* TableAnimation.swift */,
 				450932F32591A2FD0092FDF5 /* ImageLoader.swift */,
@@ -314,6 +317,7 @@
 				450932DC2591A1810092FDF5 /* CountryList.swift in Sources */,
 				450932D025919F3A0092FDF5 /* CountryListViewController.swift in Sources */,
 				4509329D2591065D0092FDF5 /* AppDelegate.swift in Sources */,
+				45EA14FF25953707000532D5 /* PropertyListner.swift in Sources */,
 				450933042591A3E50092FDF5 /* ServiceLayer.swift in Sources */,
 				450932F42591A2FD0092FDF5 /* ImageLoader.swift in Sources */,
 				4509329F2591065D0092FDF5 /* SceneDelegate.swift in Sources */,
