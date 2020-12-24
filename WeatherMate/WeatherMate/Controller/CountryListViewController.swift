@@ -61,7 +61,38 @@ class CountryListViewController: UITableViewController {
     
     var shootingEngine:Timer?
     
+    @IBOutlet var btnAdd: UIBarButtonItem!
+    var activityIndicator = UIActivityIndicatorView()
+    
     override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.rowHeight = 75
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        startBarButtonIndicator()
+        CountryList.getAllCity { [weak self](getAllCityInfo) in
+            // run on the main queue, after the previous code in outer block
+                    DispatchQueue.main.async {
+                        guard let this = self else { return }
+                        if !getAllCityInfo.isEmpty{
+                            this.cityList = getAllCityInfo
+                            this.stopBarButtonIndicator()
+                            this.navigationItem.rightBarButtonItem?.isEnabled = true
+                        }
+                        
+                    }
+                }
+        getselectedItems = [
+            CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
+            CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
+            CList(cName: "Brisbane",icon:"11n", cID: 2174003, temp: 25.29)
+        ]
+        setUp()
+        tableView.register(cellType: CountryListCell.self)
+        tableView.addSubview(cityRefreshControl)
+         
+    }
+    
+  /*  override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 75
         // To get all city list from JSON
@@ -75,7 +106,7 @@ class CountryListViewController: UITableViewController {
         setUp()
         tableView.register(cellType: CountryListCell.self)
         tableView.addSubview(cityRefreshControl)
-    }
+    } */
     
     //    Mark:- Call periodic function
     @objc func callListDetails(){
@@ -100,6 +131,19 @@ class CountryListViewController: UITableViewController {
     func nullifyTimer() {
         shootingEngine?.invalidate()
         shootingEngine = nil
+    }
+    
+    func startBarButtonIndicator() {
+        activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        activityIndicator.color = .gray
+        let barButton = UIBarButtonItem(customView: activityIndicator)
+        self.navigationItem.setRightBarButton(barButton, animated: true)
+        activityIndicator.startAnimating()
+    }
+    
+    func stopBarButtonIndicator() {
+        activityIndicator.stopAnimating()
+        navigationItem.setRightBarButton(btnAdd, animated: true)
     }
     
     // MARK: - handle Refresh action

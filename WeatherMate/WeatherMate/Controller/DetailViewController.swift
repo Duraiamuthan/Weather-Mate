@@ -37,6 +37,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var lblPressure: UILabel!
     @IBOutlet weak var lblWindSpeed: UILabel!
     
+    @IBOutlet weak var midStack: UIStackView!
     var shootingEngine:Timer?
     
     override func viewDidLoad() {
@@ -49,6 +50,7 @@ class DetailViewController: UIViewController {
             self.scrollView.addSubview(refreshControl)
             getTempInfo(getCityName: getCityName)
         }
+        
     }
     
     func setupBGImage(){
@@ -86,6 +88,27 @@ class DetailViewController: UIViewController {
         self.refreshControl.beginRefreshing()
         getTempInfo(getCityName: getCityName)
     }
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { context in
+            self.midStack.isHidden = UIWindow.isLandscape ? true : false
+        })
+    }
+    
+    var statusBarOrientations: UIInterfaceOrientation? {
+        get {
+            guard let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation else {
+                #if DEBUG
+                fatalError("Could not obtain UIInterfaceOrientation from a valid windowScene")
+                #else
+                return nil
+                #endif
+            }
+            return orientation
+        }
+    }
+    
+   
 }
 
 extension DetailViewController {

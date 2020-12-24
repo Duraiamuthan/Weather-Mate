@@ -146,19 +146,21 @@ class JSONNull: Codable, Hashable {
 
 // To fetch all city list from Json
 extension CountryList {
-  static func getAllCity() -> [CountryList] {
+  static func getAllCity(returnCompletion: @escaping ([CountryList]) -> ())  {
+    DispatchQueue.global(qos: .background).async {
     guard
       let url = Bundle.main.url(forResource: "Citylist", withExtension: "json"),
       let data = try? Data(contentsOf: url)
       else {
-        return []
+        returnCompletion([])
+        return
     }
     
     do {
-      let decoder = JSONDecoder()
-      return try decoder.decode([CountryList].self, from: data)
+        returnCompletion (try JSONDecoder().decode([CountryList].self, from: data))
     } catch {
-      return []
+        returnCompletion([])
     }
+  }
   }
 }
