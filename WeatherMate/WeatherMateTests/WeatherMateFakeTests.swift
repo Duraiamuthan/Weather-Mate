@@ -28,8 +28,9 @@ class WeatherMateFakeTests: XCTestCase {
     
     
     func testAllCityLoaded() {
-        let playData = CountryList.getAllCity()
-        XCTAssertNotEqual(playData.count, 0, "Data is not loaded")
+        CountryList.getAllCity { (getAllCityInfo) in
+             XCTAssertNotEqual(getAllCityInfo.count, 0, "Data is not loaded")
+         }
     }
     
     override func tearDown() {
