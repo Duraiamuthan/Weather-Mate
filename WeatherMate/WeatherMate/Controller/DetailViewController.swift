@@ -147,6 +147,7 @@ extension DetailViewController {
                 case .failure (let error):
                     // print(error.localizedDescription)
                     self.showToast(message: error.localizedDescription, seconds: 2.0)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) { self.navigationController?.popToRootViewController(animated: true) }
                 }
             }
             

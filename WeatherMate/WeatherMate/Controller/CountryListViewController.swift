@@ -71,16 +71,16 @@ class CountryListViewController: UITableViewController {
         startBarButtonIndicator()
         CountryList.getAllCity { [weak self](getAllCityInfo) in
             // run on the main queue, after the previous code in outer block
-                    DispatchQueue.main.async {
-                        guard let this = self else { return }
-                        if !getAllCityInfo.isEmpty{
-                            this.cityList = getAllCityInfo
-                            this.stopBarButtonIndicator()
-                            this.navigationItem.rightBarButtonItem?.isEnabled = true
-                        }
-                        
-                    }
+            DispatchQueue.main.async {
+                guard let this = self else { return }
+                if !getAllCityInfo.isEmpty{
+                    this.cityList = getAllCityInfo
+                    this.stopBarButtonIndicator()
+                    this.navigationItem.rightBarButtonItem?.isEnabled = true
                 }
+                
+            }
+        }
         getselectedItems = [
             CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
             CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
@@ -89,24 +89,24 @@ class CountryListViewController: UITableViewController {
         setUp()
         tableView.register(cellType: CountryListCell.self)
         tableView.addSubview(cityRefreshControl)
-         
+        
     }
     
-  /*  override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.rowHeight = 75
-        // To get all city list from JSON
-        cityList = CountryList.getAllCity()
-        getselectedItems = [
-            CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
-            CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
-            CList(cName: "Brisbane",icon:"11n", cID: 2174003, temp: 25.29)
-        ]
-        
-        setUp()
-        tableView.register(cellType: CountryListCell.self)
-        tableView.addSubview(cityRefreshControl)
-    } */
+    /*  override func viewDidLoad() {
+     super.viewDidLoad()
+     tableView.rowHeight = 75
+     // To get all city list from JSON
+     cityList = CountryList.getAllCity()
+     getselectedItems = [
+     CList(cName: "Sydney", icon:"04n", cID: 2147714, temp: 19.76),
+     CList(cName: "Melbourne",icon:"04n", cID: 4163971,temp: 15.41),
+     CList(cName: "Brisbane",icon:"11n", cID: 2174003, temp: 25.29)
+     ]
+     
+     setUp()
+     tableView.register(cellType: CountryListCell.self)
+     tableView.addSubview(cityRefreshControl)
+     } */
     
     //    Mark:- Call periodic function
     @objc func callListDetails(){
@@ -211,7 +211,7 @@ extension CountryListViewController{
                 }
                 switch result {
                 case .success (let currentCity):
-                    let getCityName = CList(cName: currentCity.name, icon:currentCity.weather.first?.icon ?? "", cID: currentCity.id, temp: Double(currentCity.main.temp))
+                    let getCityName = CList(cName: currentCity.name, icon:currentCity.weather.first?.icon ?? "", cID: currentCity.id, temp: currentCity.main.temp)
                     self.getselectedItems.append(getCityName)
                     self.tableView.refresh()
                     
@@ -241,6 +241,10 @@ extension CountryListViewController{
         let countryCell = tableView.dequeueReusableCell(for: indexPath) as CountryListCell
         // Configure the cell...
         countryCell.configureCell(cList: getselectedItems[indexPath.row])
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            //call any function
+            countryCell.setNeedsLayout()
+        }
         return countryCell
     }
     
