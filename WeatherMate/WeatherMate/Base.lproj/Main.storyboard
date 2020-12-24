@@ -12,64 +12,64 @@
     <scenes>
         <!--CityList-->
         <scene sceneID="8cr-kT-CUe">
-                    <objects>
-                        <tableViewController id="hB8-UG-Ck1" customClass="CountryListViewController" customModule="WeatherMate" customModuleProvider="target" sceneMemberID="viewController">
-                            <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="B9L-tz-uDO">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="separatorColor" systemColor="linkColor"/>
-                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="CityListCell" textLabel="zg2-dR-3jP" detailTextLabel="TyG-Dj-vfB" rowHeight="75" style="IBUITableViewCellStyleValue1" id="ecd-DP-4ea" customClass="CountryListCell" customModule="WeatherMate" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="75"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ecd-DP-4ea" id="4VL-ZR-iRA">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
+            <objects>
+                <tableViewController id="hB8-UG-Ck1" customClass="CountryListViewController" customModule="WeatherMate" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="B9L-tz-uDO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="separatorColor" systemColor="linkColor"/>
+                        <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="CityListCell" textLabel="zg2-dR-3jP" detailTextLabel="TyG-Dj-vfB" rowHeight="75" style="IBUITableViewCellStyleValue1" id="ecd-DP-4ea" customClass="CountryListCell" customModule="WeatherMate" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ecd-DP-4ea" id="4VL-ZR-iRA">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="75"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zg2-dR-3jP">
+                                            <rect key="frame" x="20" y="25" width="45.5" height="26.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zg2-dR-3jP">
-                                                    <rect key="frame" x="20" y="25" width="45.5" height="26.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="22"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TyG-Dj-vfB">
-                                                    <rect key="frame" x="350.5" y="30" width="43.5" height="20"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="hB8-UG-Ck1" id="F9K-p7-V4M"/>
-                                    <outlet property="delegate" destination="hB8-UG-Ck1" id="xPU-3y-6sY"/>
-                                </connections>
-                            </tableView>
-                            <navigationItem key="navigationItem" title="CityList" id="qBz-eo-0qC">
-                                <barButtonItem key="backBarButtonItem" title=" " id="OHl-6s-aqY"/>
-                                <barButtonItem key="rightBarButtonItem" systemItem="add" id="Fek-Wp-daZ">
-                                    <connections>
-                                        <segue destination="kxG-4M-bUS" kind="show" id="xdZ-e1-pug"/>
-                                    </connections>
-                                </barButtonItem>
-                            </navigationItem>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="22"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TyG-Dj-vfB">
+                                            <rect key="frame" x="350.5" y="30" width="43.5" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="hB8-UG-Ck1" id="F9K-p7-V4M"/>
+                            <outlet property="delegate" destination="hB8-UG-Ck1" id="xPU-3y-6sY"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="CityList" id="qBz-eo-0qC">
+                        <barButtonItem key="backBarButtonItem" title=" " id="OHl-6s-aqY"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Fek-Wp-daZ">
                             <connections>
-                                <outlet property="btnAdd" destination="Fek-Wp-daZ" id="cWA-Re-3ez"/>
-                                <segue destination="6K1-AQ-7cH" kind="show" identifier="openDetail" id="LeP-ow-qGg"/>
+                                <segue destination="kxG-4M-bUS" kind="show" id="xdZ-e1-pug"/>
                             </connections>
-                        </tableViewController>
-                        <placeholder placeholderIdentifier="IBFirstResponder" id="1Kg-gb-PK4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                    </objects>
-                    <point key="canvasLocation" x="1286.9565217391305" y="98.4375"/>
-                </scene>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="btnAdd" destination="Fek-Wp-daZ" id="cWA-Re-3ez"/>
+                        <segue destination="6K1-AQ-7cH" kind="show" identifier="openDetail" id="LeP-ow-qGg"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Kg-gb-PK4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1286.9565217391305" y="98.4375"/>
+        </scene>
         <!--Detail View Controller-->
         <scene sceneID="wqT-Q8-dU5">
             <objects>
@@ -240,6 +240,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bottomStack" destination="nbb-Vu-MKC" id="ee1-m2-XhQ"/>
                         <outlet property="imgCloudy" destination="A7L-8K-c95" id="utc-LO-zHL"/>
                         <outlet property="lblCast" destination="dJL-mq-jHX" id="GGv-mY-2Yj"/>
                         <outlet property="lblHuminidy" destination="pZH-aB-BON" id="q4E-b5-uFc"/>
@@ -250,6 +251,7 @@
                         <outlet property="lblWindSpeed" destination="uBg-3H-o4H" id="BS1-Qh-1li"/>
                         <outlet property="midStack" destination="4R3-p7-n8I" id="VUD-Js-XdZ"/>
                         <outlet property="scrollView" destination="SxG-1p-Skq" id="xqW-zb-9Ho"/>
+                        <outlet property="topStack" destination="tnH-p0-ab1" id="Fnn-xG-qjG"/>
                         <outlet property="vieBG" destination="sZT-1H-27D" id="hzA-wz-yBX"/>
                     </connections>
                 </viewController>

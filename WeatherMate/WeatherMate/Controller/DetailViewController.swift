@@ -37,6 +37,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var lblPressure: UILabel!
     @IBOutlet weak var lblWindSpeed: UILabel!
     
+    @IBOutlet weak var bottomStack: UIStackView!
+    @IBOutlet weak var topStack: UIStackView!
     @IBOutlet weak var midStack: UIStackView!
     var shootingEngine:Timer?
     
@@ -52,6 +54,15 @@ class DetailViewController: UIViewController {
         }
         
     }
+    
+    func showAndHideViews(state: Bool){
+        UIViewPropertyAnimator(duration: 0.5, curve: .easeOut, animations: {
+            self.midStack.isHidden = state
+            self.topStack.isHidden = state
+            self.bottomStack.isHidden = state
+        }).startAnimation()
+    }
+    
     
     func setupBGImage(){
         vieBG.layer.contents = UIImage(named: "Weather_image.jpg")?.cgImage
@@ -107,14 +118,13 @@ class DetailViewController: UIViewController {
             return orientation
         }
     }
-    
-   
 }
 
 extension DetailViewController {
     // MARK: - APi call for get city details
     func getTempInfo(getCityName: String){
         self.view.activityStartAnimating(activityColor: .white, backgroundColor: UIColor.black.withAlphaComponent(0.5))
+        self.showAndHideViews(state: true)
         ServiceLayer.request(router: Router.getCityInfo, ciyIDParameters: ["q": getCityName]) { (result: Result<TempInfo, Error>) in
             DispatchQueue.main.async {
                 self.view.activityStopAnimating()
@@ -142,6 +152,7 @@ extension DetailViewController {
                         self.lblHuminidy.text = String(format:"%d%",getList.main.humidity)
                         self.lblPressure.text = String(format:"%dinHg",getList.main.pressure)
                         self.lblWindSpeed.text = FormatDisplay.convertTemp(temp: getList.wind.speed )
+                        self.showAndHideViews(state: false)
                     }
                     
                 case .failure (let error):
