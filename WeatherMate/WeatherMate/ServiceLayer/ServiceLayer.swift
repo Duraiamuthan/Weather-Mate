@@ -34,11 +34,17 @@ class ServiceLayer {
             //6.
             if let response = response as? HTTPURLResponse, response.isResponseSuccess {
                 //  its successful
-                let responseObject = try! JSONDecoder().decode(T.self, from: data!)
+                do{
+                print(response)
+                let responseObject = try JSONDecoder().decode(T.self, from: data!)
                 // 7.
                 DispatchQueue.main.async {
                     // 8.
                     completion(.success(responseObject))
+                }
+                }
+                catch {
+                    completion(.failure(error))
                 }
             } else {
                 if let getError = error{

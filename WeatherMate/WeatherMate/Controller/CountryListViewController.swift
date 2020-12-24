@@ -200,6 +200,7 @@ extension CountryListViewController{
     func updateCityList(geCityID: Int){
         self.view.activityStartAnimating(activityColor: .white, backgroundColor: UIColor.black.withAlphaComponent(0.5))
         ServiceLayer.request(router: Router.getCityTempInfo, ciyIDParameters: ["id": String(geCityID)]) { (result: Result<CityDetailsList, Error>) in
+            print(result)
             DispatchQueue.main.async {
                 self.view.activityStopAnimating()
                 let updateString = "Last Updated at " + self.dateFormatter.string(from: Date())
@@ -210,7 +211,7 @@ extension CountryListViewController{
                 }
                 switch result {
                 case .success (let currentCity):
-                    let getCityName = CList(cName: currentCity.name, icon:currentCity.weather.first?.icon ?? "", cID: currentCity.id, temp: currentCity.main.temp)
+                    let getCityName = CList(cName: currentCity.name, icon:currentCity.weather.first?.icon ?? "", cID: currentCity.id, temp: Double(currentCity.main.temp))
                     self.getselectedItems.append(getCityName)
                     self.tableView.refresh()
                     
